@@ -22,10 +22,10 @@ const Landing = ({ onAnalysisComplete }) => {
     try {
       const { analyzeChat } = await import("../utils/api");
       const { transformAnalysisData } = await import("../utils/dataTransform");
-      
+
       const response = await analyzeChat(chatText);
       const transformedData = transformAnalysisData(response);
-      
+
       setSuccess(true);
       setTimeout(() => {
         if (onAnalysisComplete) onAnalysisComplete(transformedData);
@@ -64,18 +64,26 @@ const Landing = ({ onAnalysisComplete }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 font-sans">
-      
+    <div className="relative min-h-screen bg-slate-50 selection:bg-emerald-100 selection:text-emerald-900 font-sans">
+
       {/* --- Technical Background Grid --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
+        {/* Social Icons Background */}
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <Icon icon="skill-icons:instagram" className="absolute top-20 left-[10%] w-32 h-32 -rotate-12 blur-[1px]" />
+          <Icon icon="logos:whatsapp-icon" className="absolute top-40 right-[15%] w-40 h-40 rotate-12 blur-[1px]" />
+          <Icon icon="logos:facebook" className="absolute bottom-1/4 left-[5%] w-36 h-36 -rotate-6 blur-[1px]" />
+          <Icon icon="logos:twitter" className="absolute bottom-1/3 right-[5%] w-28 h-28 rotate-12 blur-[1px]" />
+        </div>
       </div>
 
       {/* --- Hero Section --- */}
       <section className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm text-slate-600 text-xs font-mono mb-6">
             <span className="relative flex h-2 w-2">
@@ -97,9 +105,9 @@ const Landing = ({ onAnalysisComplete }) => {
         <div className="max-w-4xl mx-auto relative group">
           {/* Decorative glow behind the editor */}
           <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 rounded-2xl opacity-20 blur transition duration-500 group-hover:opacity-40"></div>
-          
+
           <div className="relative bg-white rounded-xl shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden">
-            
+
             {/* Toolbar / Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
               <div className="flex gap-2">
@@ -110,14 +118,14 @@ const Landing = ({ onAnalysisComplete }) => {
               <div className="text-xs font-mono text-slate-400">input.txt</div>
               <div className="flex gap-2">
                 {chatText && (
-                  <button 
+                  <button
                     onClick={handleClear}
                     className="text-xs font-medium text-slate-400 hover:text-rose-500 transition-colors px-2"
                   >
                     Clear
                   </button>
                 )}
-                <button 
+                <button
                   onClick={handlePaste}
                   className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white border border-slate-200 shadow-sm text-xs font-medium text-slate-600 hover:text-emerald-600 hover:border-emerald-200 transition-all"
                 >
@@ -139,25 +147,25 @@ const Landing = ({ onAnalysisComplete }) => {
 
             {/* Bottom Status Bar / Action Area */}
             <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
-              
+
               {/* Status Indicator */}
               <div className="flex items-center gap-3">
-                 {error ? (
-                    <div className="flex items-center gap-2 text-rose-600 text-sm font-medium animate-in slide-in-from-left-2">
-                      <Icon icon="solar:danger-circle-bold" />
-                      <span>{error}</span>
-                    </div>
-                 ) : success ? (
-                    <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium animate-in slide-in-from-left-2">
-                      <Icon icon="solar:check-circle-bold" />
-                      <span>Ready to analyze</span>
-                    </div>
-                 ) : (
-                    <div className="hidden sm:flex items-center gap-2 text-slate-400 text-xs font-mono">
-                      <Icon icon="solar:info-circle-linear" />
-                      <span>Data is processed locally in browser memory</span>
-                    </div>
-                 )}
+                {error ? (
+                  <div className="flex items-center gap-2 text-rose-600 text-sm font-medium animate-in slide-in-from-left-2">
+                    <Icon icon="solar:danger-circle-bold" />
+                    <span>{error}</span>
+                  </div>
+                ) : success ? (
+                  <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium animate-in slide-in-from-left-2">
+                    <Icon icon="solar:check-circle-bold" />
+                    <span>Ready to analyze</span>
+                  </div>
+                ) : (
+                  <div className="hidden sm:flex items-center gap-2 text-slate-400 text-xs font-mono">
+                    <Icon icon="solar:info-circle-linear" />
+                    <span>Data is processed locally in browser memory</span>
+                  </div>
+                )}
               </div>
 
               {/* Main Action Button */}
@@ -220,7 +228,7 @@ const Landing = ({ onAnalysisComplete }) => {
             Stop guessing. Start knowing.
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-             <button
+            <button
               onClick={() => {
                 document.querySelector('textarea')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 document.querySelector('textarea')?.focus();
