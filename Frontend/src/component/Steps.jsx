@@ -4,68 +4,81 @@ import { Icon } from "@iconify/react";
 const Steps = () => {
   const steps = [
     {
-      number: 1,
-      icon: "mdi:content-copy",
-      title: "Copy Your Chat",
-      description: "Export or copy your WhatsApp, iMessage, or any chat conversation",
-      gradient: "from-emerald-500 to-teal-500",
-      shadow: "shadow-emerald-500/30",
+      number: "01",
+      // Changed to WhatsApp icon as requested for the source
+      icon: "logos:whatsapp-icon", 
+      title: "Export Chat",
+      description: "Export your conversation directly from WhatsApp or iMessage.",
+      // Using a subtle ring color instead of heavy gradients
+      accent: "ring-emerald-500/20",
     },
     {
-      number: 2,
-      icon: "mdi:paste",
-      title: "Paste Here",
-      description: "Paste the chat text into the input box above",
-      gradient: "from-teal-500 to-emerald-500",
-      shadow: "shadow-teal-500/30",
+      number: "02",
+      icon: "solar:clipboard-add-linear", // A more modern "Paste" icon
+      title: "Paste Content",
+      description: "Drop the text into the analysis box. We handle the formatting.",
+      accent: "ring-teal-500/20",
     },
     {
-      number: 3,
-      icon: "mdi:chart-line",
+      number: "03",
+      icon: "solar:magic-stick-3-linear", // "Magic/Insights" icon
       title: "Get Insights",
-      description: "Receive comprehensive analysis with charts, metrics, and suggestions",
-      gradient: "from-emerald-500 to-teal-500",
-      shadow: "shadow-emerald-500/30",
+      description: "Unlock behavioral patterns, metrics, and summary charts instantly.",
+      accent: "ring-emerald-500/20",
     },
   ];
 
   return (
-    <div className="w-full">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">
-            How It Works
+    <div className="w-full py-24 bg-slate-50/50">
+      <div className="max-w-5xl mx-auto px-6">
+        {/* Header Section */}
+        <div className="text-center mb-16 space-y-4">
+          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-emerald-100 bg-emerald-50 text-emerald-700 text-xs font-semibold uppercase tracking-wide">
+            Simple Process
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+            From Chat to <span className="text-emerald-600">Clarity</span>
           </h2>
-          <p className="text-slate-500 text-lg">
-            Get insights in three simple steps
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
+            Turn your messy chat logs into actionable data in three automated steps.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {/* Steps Grid */}
+        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* Decorative Connecting Line (Desktop Only) */}
+          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-gradient-to-r from-slate-200 via-emerald-200 to-slate-200 border-t border-dashed border-slate-300" aria-hidden="true" />
+
           {steps.map((step, index) => (
             <div
               key={step.number}
               className="relative flex flex-col items-center text-center group"
             >
-              {/* Connector Line (hidden on last item) */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-full h-0.5 bg-gradient-to-r from-emerald-200 via-teal-200 to-emerald-200 -z-10" />
-              )}
-
-              {/* Step Number Circle */}
-              <div className={`relative mb-4 w-24 h-24 rounded-full bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow-lg ${step.shadow} group-hover:scale-110 transition-transform duration-300`}>
-                <div className="absolute inset-0 rounded-full bg-white/20 backdrop-blur-sm" />
-                <div className="relative z-10">
-                  <Icon icon={step.icon} className="w-10 h-10 text-white" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center text-emerald-600 font-bold text-sm shadow-md">
-                  {step.number}
+              {/* Icon Container with "Premium" Glass/Border effect */}
+              <div className={`relative mb-6 z-10 transition-all duration-300 group-hover:-translate-y-2`}>
+                
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-white rounded-2xl shadow-xl shadow-slate-200/50 transform rotate-3 group-hover:rotate-6 transition-transform duration-300" />
+                
+                {/* Main Box */}
+                <div className={`relative w-24 h-24 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center ${step.accent} ring-4`}>
+                  {/* Step Number Badge */}
+                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-md">
+                    {step.number}
+                  </div>
+                  
+                  {/* The Icon */}
+                  <Icon 
+                    icon={step.icon} 
+                    className={`w-10 h-10 ${index === 0 ? '' : 'text-emerald-600'} transition-transform duration-500 group-hover:scale-110`} 
+                  />
                 </div>
               </div>
 
-              {/* Step Content */}
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-slate-800">
+              {/* Text Content */}
+              <div className="space-y-3 px-4">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
                   {step.title}
                 </h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
@@ -81,4 +94,3 @@ const Steps = () => {
 };
 
 export default Steps;
-

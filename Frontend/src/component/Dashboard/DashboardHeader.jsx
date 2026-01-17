@@ -1,106 +1,103 @@
+import React from 'react';
 import { Icon } from '@iconify/react';
 
 const DashboardHeader = ({ data, mounted, participantNames }) => {
   const summary = data?.summary || {};
   const relationshipType = summary?.relationship_type || 'Unknown';
   const sentiment = summary?.overall_sentiment || 'neutral';
-  const healthScore = summary?.relationship_health_score || 0;
-  const romanticProb = summary?.romantic_probability || 0;
+  
+  // Participant Names Logic
+  const p1 = participantNames?.p1 || "Person A";
+  const p2 = participantNames?.p2 || "Person B";
 
-  const sentimentColors = {
-    positive: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    negative: 'bg-red-50 text-red-700 border-red-200',
-    neutral: 'bg-gray-50 text-gray-700 border-gray-200',
-    mixed: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  // Sentiment Styles (Modern "Dot" style)
+  const getSentimentStyle = (sent) => {
+    switch (sent?.toLowerCase()) {
+      case 'positive': return { color: 'text-emerald-700', bg: 'bg-emerald-50', dot: 'bg-emerald-500', border: 'border-emerald-200' };
+      case 'negative': return { color: 'text-rose-700', bg: 'bg-rose-50', dot: 'bg-rose-500', border: 'border-rose-200' };
+      case 'mixed': return { color: 'text-amber-700', bg: 'bg-amber-50', dot: 'bg-amber-500', border: 'border-amber-200' };
+      default: return { color: 'text-slate-700', bg: 'bg-slate-50', dot: 'bg-slate-500', border: 'border-slate-200' };
+    }
   };
 
-  const getSentimentLabel = (sent) => {
-    const labels = {
-      positive: 'Positive',
-      negative: 'Negative',
-      neutral: 'Neutral',
-      mixed: 'Mixed',
-    };
-    return labels[sent] || 'Neutral';
-  };
+  const sentStyle = getSentimentStyle(sentiment);
 
   return (
     <div
-      className={`bg-white/90 backdrop-blur-md rounded-2xl p-8 border border-emerald-100 shadow-xl ${
-        mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      } transition-all duration-700`}
+      className={`relative w-full mb-8 ${
+        mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+      } transition-all duration-700 ease-out`}
     >
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-        <div className="flex-1">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 bg-clip-text text-transparent mb-2">
-            Conversation Insight Dashboard
-          </h1>
-          <div className="flex items-center gap-4 mt-4 flex-wrap">
-            <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-lg border border-emerald-200">
-              <Icon icon="mdi:account-group" className="w-5 h-5 text-emerald-600" />
-              <span className="text-emerald-900 font-medium">{relationshipType}</span>
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+        
+        {/* --- Left Side: Identity & Context --- */}
+        <div className="flex items-start gap-4">
+          {/* Avatar Stack Icon */}
+          <div className="hidden sm:flex -space-x-3">
+            <div className="w-12 h-12 rounded-full bg-emerald-100 border-2 border-white flex items-center justify-center text-emerald-700 font-bold text-lg shadow-sm">
+              {p1[0]}
             </div>
-            <div
-              className={`px-4 py-2 rounded-lg border ${sentimentColors[sentiment]}`}
-            >
-              {getSentimentLabel(sentiment)}
+            <div className="w-12 h-12 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-slate-700 font-bold text-lg shadow-sm">
+              {p2[0]}
             </div>
+          </div>
+
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
+              Conversation Analysis
+              <span className="hidden md:inline-flex px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono text-slate-500 font-normal">
+                v2.4
+              </span>
+            </h1>
+            <p className="text-slate-500 mt-1 flex items-center gap-2 text-sm">
+              <span>Between <strong>{p1}</strong> and <strong>{p2}</strong></span>
+              <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+              <span>Processed {new Date().toLocaleDateString()}</span>
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
-          <div className="flex flex-col items-center">
-            <div className="relative w-24 h-24">
-              <svg className="w-24 h-24 transform -rotate-90">
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="40"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  fill="none"
-                  className="text-emerald-100"
-                />
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="40"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  fill="none"
-                  strokeDasharray={`${(romanticProb / 100) * 251.2} 251.2`}
-                  className="text-emerald-500 transition-all duration-1000"
-                  style={{
-                    opacity: mounted ? 1 : 0,
-                  }}
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600">{romanticProb}%</div>
-                  <div className="text-xs text-emerald-600">Romantic</div>
+        {/* --- Right Side: KPI Stats Grid --- */}
+        <div className="flex flex-wrap items-center gap-4">
+            
+            {/* Metric 1: Relationship Type */}
+            <div className="flex items-center gap-3 px-5 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                    <Icon icon="solar:users-group-rounded-bold" className="w-5 h-5" />
                 </div>
-              </div>
+                <div>
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Dynamic</p>
+                    <p className="text-sm font-bold text-slate-900 capitalize">{relationshipType}</p>
+                </div>
             </div>
-          </div>
 
-          <div className="flex-1 min-w-[200px]">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-emerald-700 flex items-center gap-2">
-                <Icon icon="mdi:trending-up" className="w-4 h-4" />
-                Health Score
-              </span>
-              <span className="text-sm font-semibold text-emerald-600">{healthScore}%</span>
+            {/* Metric 2: Sentiment Status */}
+            <div className={`flex items-center gap-3 px-5 py-3 bg-white rounded-xl border border-slate-200 shadow-sm`}>
+                <div className={`p-2 rounded-lg ${sentStyle.bg} ${sentStyle.color}`}>
+                    <Icon icon="solar:emoji-funny-circle-bold" className="w-5 h-5" />
+                </div>
+                <div>
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Sentiment</p>
+                    <div className="flex items-center gap-1.5">
+                        <span className={`w-2 h-2 rounded-full ${sentStyle.dot}`}></span>
+                        <p className="text-sm font-bold text-slate-900 capitalize">{sentiment}</p>
+                    </div>
+                </div>
             </div>
-            <div className="h-3 bg-emerald-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000 ease-out"
-                style={{
-                  width: mounted ? `${healthScore}%` : '0%',
-                }}
-              />
+
+            {/* Metric 3: Message Count (Estimated) */}
+            <div className="flex items-center gap-3 px-5 py-3 bg-white rounded-xl border border-slate-200 shadow-sm">
+                <div className="p-2 bg-slate-50 text-slate-600 rounded-lg">
+                    <Icon icon="solar:chat-line-bold" className="w-5 h-5" />
+                </div>
+                <div>
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Messages</p>
+                    <p className="text-sm font-bold text-slate-900">
+                        {summary?.total_messages || 0} <span className="text-slate-400 font-normal text-xs">count</span>
+                    </p>
+                </div>
             </div>
-          </div>
+
         </div>
       </div>
     </div>

@@ -1,95 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import DonateModal from "./DonateModal"; // Ensure DonateModal.jsx is in the same folder
+import DonateModal from "./DonateModal";
 
 const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
   const [showDonateModal, setShowDonateModal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Define theme colors
-  const baseClass = isDark ? "bg-slate-900/80 border-slate-800" : "bg-white/60 border-white/40";
-  const textClass = isDark ? "text-slate-200" : "text-slate-600";
-  const hoverClass = isDark ? "hover:bg-slate-800 hover:text-white" : "hover:bg-emerald-50 hover:text-emerald-700";
-  const logoClass = isDark ? "text-white" : "text-slate-800";
+  // Add a scroll listener to make the border appear only when scrolling
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Theme Constants
+  const theme = {
+    nav: isDark 
+      ? `bg-slate-900/80 border-slate-800 ${scrolled ? 'border-b shadow-lg shadow-black/5' : 'border-transparent'}` 
+      : `bg-white/70 border-slate-200/60 ${scrolled ? 'border-b shadow-sm shadow-slate-200/50' : 'border-transparent'}`,
+    text: isDark ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-900",
+    buttonBase: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 border",
+    github: isDark 
+      ? "bg-slate-800 border-slate-700 text-white hover:bg-slate-700" 
+      : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:shadow-sm",
+    donate: isDark
+      ? "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:bg-rose-500/20"
+      : "bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100 hover:border-rose-200",
+  };
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b backdrop-blur-md transition-all duration-300 ${baseClass}`}>
-        
-        {/* Container to center content */}
-        <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
+      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 backdrop-blur-xl ${theme.nav}`}>
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           
-          {/* Logo Section */}
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300">
-              <Icon icon="mdi:chat-processing-outline" className="w-5 h-5" />
+          {/* --- Brand Identity --- */}
+          <div 
+            className="flex items-center gap-3 group cursor-pointer"
+            onClick={onHomeClick || (() => window.location.href = '/')}
+          >
+            {/* Logo Mark: Squircle shape to match your Steps component */}
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300 ring-1 ring-white/20">
+              <Icon icon="mdi:chat-processing-outline" className="w-5 h-5 text-white" />
             </div>
-            <span className={`text-xl font-bold tracking-tight ${logoClass}`}>
+            
+            {/* Logo Text */}
+            <span className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ChatSense
             </span>
           </div>
 
-          {/* Navigation Links */}
-          <div className={`flex items-center gap-2 text-sm font-medium ${textClass}`}>
+          {/* --- Actions --- */}
+          <div className="flex items-center gap-3 md:gap-4">
             
-            {/* Home Button */}
-            {showHomeButton && onHomeClick ? (
+            {/* Navigation / Home */}
+            {showHomeButton && (
               <button
                 onClick={onHomeClick}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${hoverClass}`}
+                className={`hidden md:flex items-center gap-2 text-sm font-medium ${theme.text} transition-colors`}
               >
-                <Icon icon="mdi:home-variant-outline" className="w-4 h-4" />
                 <span>Home</span>
               </button>
-            ) : (
-              <a 
-                href="/" 
-                className={`px-4 py-2 rounded-full transition-all duration-200 ${hoverClass}`}
-              >
-                Home
-              </a>
             )}
 
-            {/* GitHub Star Button */}
+            {/* Separator Line (Desktop only) */}
+            <div className={`hidden md:block h-4 w-px ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`} />
+
+            {/* GitHub Button - "Tool" Aesthetic */}
             <a 
-              href="https://github.com/creation22/chatsense" // Double check your repo URL
+              href="https://github.com/creation22/chatsense" 
               target="_blank"
               rel="noreferrer"
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all duration-200 ${hoverClass}`}
+              className={theme.github + " " + theme.buttonBase}
             >
               <Icon icon="mdi:github" className="w-4 h-4" />
-              <span>Star</span>
+              <span className="hidden sm:inline">Star</span>
+              <span className={`text-xs px-1.5 py-0.5 rounded-md ml-1 ${isDark ? 'bg-slate-700' : 'bg-slate-100 text-slate-500'}`}>
+                Free
+              </span>
             </a>
 
-            {/* Donate Button (Triggers Modal) */}
+            {/* Donate Button - "Accent" Aesthetic */}
             <button
               onClick={() => setShowDonateModal(true)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all duration-200 
-                ${isDark ? 'hover:bg-rose-900/30 hover:text-rose-400' : 'hover:bg-rose-50 hover:text-rose-600'}`}
+              className={theme.donate + " " + theme.buttonBase}
             >
-              <Icon icon="mdi:heart" className="w-4 h-4" />
-              <span>Donate</span>
+              <Icon icon="solar:heart-angle-bold" className="w-4 h-4" />
+              <span className="hidden sm:inline">Support</span>
             </button>
 
-            {/* Twitter / Social Icon */}
+            {/* Social / Twitter - Subtle Icon */}
             <a
               href="https://twitter.com/_Creation22"
               target="_blank"
               rel="noreferrer"
+              className={`p-2 rounded-lg transition-colors ${theme.text} ${isDark ? 'hover:bg-slate-800' : 'hover:bg-slate-100'}`}
               aria-label="Twitter"
-              className={`p-2 rounded-full transition-all duration-200 ${hoverClass}`}
             >
-              <Icon icon="mdi:twitter" className="w-5 h-5" />
+              <Icon icon="prime:twitter" className="w-5 h-5" />
             </a>
-            
           </div>
         </div>
       </nav>
 
-      {/* Donate Modal Rendered Outside Nav Flow */}
+      {/* --- Modal --- */}
       {showDonateModal && (
         <DonateModal 
           onClose={() => setShowDonateModal(false)}
-          upiId="srajangupta220@okhdfcbank" // ⚠️ REPLACE THIS WITH YOUR REAL UPI ID
+          upiId="srajangupta220@okhdfcbank"
           name="ChatSense Support"
         />
       )}
