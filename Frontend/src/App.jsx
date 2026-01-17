@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './component/Navbar';
 import Landing from './component/Landing';
 import Dashboard from './component/Dashboard';
@@ -52,6 +53,9 @@ function App() {
           )}
         </div>
       </main>
+
+      {/* --- Vercel Web Analytics --- */}
+      <Analytics />
 
     </div>
   );
