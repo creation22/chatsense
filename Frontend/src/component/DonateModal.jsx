@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import QRCode from "react-qr-code"; // Ensure you installed: npm install react-qr-code
 import { Icon } from "@iconify/react";
 
-const DonateModal = ({ onClose, upiId = "your-upi-id@okaxis", name = "ChatSense Support" }) => {
+const DonateModal = ({ onClose, upiId = "your-upi-id@okaxis", name = "TalkSense Support" }) => {
   const [copied, setCopied] = useState(false);
 
   // Format: upi://pay?pa=ADDRESS&pn=NAME&cu=INR
@@ -17,16 +17,16 @@ const DonateModal = ({ onClose, upiId = "your-upi-id@okaxis", name = "ChatSense 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" 
+      <div
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Card */}
       <div className="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl p-8 animate-in zoom-in-95 duration-200">
-        
+
         {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
         >
@@ -64,11 +64,10 @@ const DonateModal = ({ onClose, upiId = "your-upi-id@okaxis", name = "ChatSense 
             </div>
             <button
               onClick={handleCopy}
-              className={`p-2 rounded-lg transition-all ${
-                copied 
-                  ? "bg-emerald-100 text-emerald-600" 
+              className={`p-2 rounded-lg transition-all ${copied
+                  ? "bg-emerald-100 text-emerald-600"
                   : "bg-white text-slate-500 hover:text-emerald-600 shadow-sm border border-slate-200"
-              }`}
+                }`}
             >
               <Icon icon={copied ? "mdi:check" : "mdi:content-copy"} className="w-5 h-5" />
             </button>

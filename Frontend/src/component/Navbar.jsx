@@ -15,13 +15,13 @@ const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
 
   // Theme Constants
   const theme = {
-    nav: isDark 
-      ? `bg-slate-900/80 border-slate-800 ${scrolled ? 'border-b shadow-lg shadow-black/5' : 'border-transparent'}` 
+    nav: isDark
+      ? `bg-slate-900/80 border-slate-800 ${scrolled ? 'border-b shadow-lg shadow-black/5' : 'border-transparent'}`
       : `bg-white/70 border-slate-200/60 ${scrolled ? 'border-b shadow-sm shadow-slate-200/50' : 'border-transparent'}`,
     text: isDark ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-900",
     buttonBase: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 border",
-    github: isDark 
-      ? "bg-slate-800 border-slate-700 text-white hover:bg-slate-700" 
+    github: isDark
+      ? "bg-slate-800 border-slate-700 text-white hover:bg-slate-700"
       : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:shadow-sm",
     donate: isDark
       ? "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:bg-rose-500/20"
@@ -32,9 +32,9 @@ const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
     <>
       <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 backdrop-blur-xl ${theme.nav}`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          
+
           {/* --- Brand Identity --- */}
-          <div 
+          <div
             className="flex items-center gap-3 group cursor-pointer"
             onClick={onHomeClick || (() => window.location.href = '/')}
           >
@@ -42,16 +42,16 @@ const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
             <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-300 ring-1 ring-white/20">
               <Icon icon="mdi:chat-processing-outline" className="w-5 h-5 text-white" />
             </div>
-            
+
             {/* Logo Text */}
             <span className={`text-lg font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              ChatSense
+              TalkSense
             </span>
           </div>
 
           {/* --- Actions --- */}
           <div className="flex items-center gap-3 md:gap-4">
-            
+
             {/* Navigation / Home */}
             {showHomeButton && (
               <button
@@ -66,8 +66,8 @@ const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
             <div className={`hidden md:block h-4 w-px ${isDark ? 'bg-slate-700' : 'bg-slate-200'}`} />
 
             {/* GitHub Button - "Tool" Aesthetic */}
-            <a 
-              href="https://github.com/creation22/chatsense" 
+            <a
+              href="https://github.com/creation22/chatsense"
               target="_blank"
               rel="noreferrer"
               className={theme.github + " " + theme.buttonBase}
@@ -104,7 +104,7 @@ const Navbar = ({ onHomeClick, showHomeButton = false, isDark = false }) => {
 
       {/* --- Modal --- */}
       {showDonateModal && (
-        <DonateModal 
+        <DonateModal
           onClose={() => setShowDonateModal(false)}
           upiId="srajangupta220@okhdfcbank"
           name="ChatSense Support"

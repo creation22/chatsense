@@ -33,15 +33,15 @@ const Footer = () => {
 
   return (
     <footer className="w-full border-t border-slate-200 bg-white pt-16 pb-8 relative overflow-hidden">
-      
+
       {/* Background decoration (matches landing page grid) */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+
         {/* Top Grid: Brand + Links */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
-          
+
           {/* Brand Column (Spans 2 columns) */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-2 group cursor-default">
@@ -50,10 +50,10 @@ const Footer = () => {
                 <Icon icon="mdi:chat-processing-outline" className="w-5 h-5" />
               </div>
               <span className="text-xl font-bold text-slate-900 tracking-tight">
-                ChatSense
+                TalkSense
               </span>
             </div>
-            
+
             <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
               Privacy-first conversation intelligence. Decoding the hidden patterns in your chats without storing a single byte.
             </p>
@@ -86,8 +86,8 @@ const Footer = () => {
               <ul className="space-y-3">
                 {section.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-sm text-slate-500 hover:text-emerald-600 transition-colors"
                     >
                       {link.label}
@@ -100,28 +100,28 @@ const Footer = () => {
 
           {/* Newsletter / Status Column (Optional filler) */}
           <div className="lg:col-span-1">
-             {/* Can be used for extra links or left empty */}
+            {/* Can be used for extra links or left empty */}
           </div>
         </div>
 
         {/* Bottom Bar: Copyright + Status */}
         <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
-          
+
           <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>All systems operational</span>
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-slate-500">
-            <p>© {currentYear} ChatSense.</p>
-            
+            <p>© {currentYear} TalkSense.</p>
+
             <span className="hidden md:block w-1 h-1 rounded-full bg-slate-300"></span>
-            
+
             <div className="flex items-center gap-1.5">
               <span>Built by</span>
-              <a 
-                href="https://twitter.com/_Creation22" 
-                target="_blank" 
+              <a
+                href="https://twitter.com/_Creation22"
+                target="_blank"
                 rel="noreferrer"
                 className="font-medium text-slate-900 hover:text-emerald-600 transition-colors border-b border-transparent hover:border-emerald-200"
               >
