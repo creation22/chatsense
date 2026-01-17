@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+
+// Component Imports
 import DashboardHeader from './Dashboard/DashboardHeader';
 import OverviewCards from './Dashboard/OverviewCards';
 import CommunicationAnalysis from './Dashboard/CommunicationAnalysis';
@@ -20,8 +22,17 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
   }, []);
 
   const participantNames = analysisData?.participantNames || {};
+  const healthScore = analysisData?.summary?.relationship_health_score || 0;
+  const romanceScore = analysisData?.summary?.romantic_probability || 0;
 
-  // --- 1. Empty State / Loading Design ---
+  // Score Helper
+  const getScoreColor = (score) => {
+    if (score >= 80) return "text-emerald-600 bg-emerald-50 border-emerald-100";
+    if (score >= 60) return "text-amber-600 bg-amber-50 border-amber-100";
+    return "text-rose-600 bg-rose-50 border-rose-100";
+  };
+
+  // Empty State Check
   if (!analysisData) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
@@ -42,28 +53,17 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
     );
   }
 
-  // Helper for score color coding
-  const getScoreColor = (score) => {
-    if (score >= 80) return "text-emerald-600 bg-emerald-50 border-emerald-100";
-    if (score >= 60) return "text-amber-600 bg-amber-50 border-amber-100";
-    return "text-rose-600 bg-rose-50 border-rose-100";
-  };
-
-  const healthScore = analysisData?.summary?.relationship_health_score || 0;
-  const romanceScore = analysisData?.summary?.romantic_probability || 0;
-
   return (
     <div className="min-h-screen w-full bg-slate-50 relative selection:bg-emerald-100 selection:text-emerald-900">
       
-      {/* --- Technical Background Grid (Matches Landing) --- */}
+      {/* Background Grid */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
       </div>
 
-      {/* --- Content Wrapper --- */}
       <div className="relative z-10 pb-20">
         
-        {/* Navigation / Header Area */}
+        {/* --- Header / Navigation --- */}
         <div className={`sticky top-0 z-30 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm' : 'bg-transparent border-transparent'}`}>
             <div className="container mx-auto px-4 max-w-7xl py-4">
                 <div className="flex items-center justify-between gap-4">
@@ -76,35 +76,31 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
                         <span className="hidden sm:inline">Back to Input</span>
                     </button>
 
-                    {/* Meta Info (Right Side) */}
                     <div className="flex items-center gap-3">
                          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-md border border-slate-200 text-xs font-mono text-slate-500">
                             <Icon icon="solar:calendar-linear" className="w-3.5 h-3.5" />
                             <span>{new Date().toLocaleDateString()}</span>
                         </div>
-                        <button className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-sm text-xs font-medium text-slate-700 hover:bg-slate-50">
-                            <Icon icon="solar:export-linear" className="w-4 h-4" />
-                            <span>Export PDF</span>
-                        </button>
+                        {/* PDF Export Button Removed Here */}
                     </div>
                 </div>
             </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          {/* Header Component (Passed Down) */}
+        {/* --- Main Content --- */}
+        <div className="container mx-auto px-4 py-8 max-w-7xl bg-slate-50">
+          
           <div className="mb-8">
             <DashboardHeader data={analysisData} mounted={mounted} participantNames={participantNames} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* --- Left Column: Deep Analysis (Span 8) --- */}
+            {/* Left Column (Main Analysis) */}
             <div className="lg:col-span-8 space-y-8">
               <OverviewCards data={analysisData} mounted={mounted} participantNames={participantNames} />
               
               <div className="space-y-8">
-                 {/* Section Wrappers with "Paper" styling */}
                 <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <CommunicationAnalysis data={analysisData} mounted={mounted} participantNames={participantNames} />
                 </section>
@@ -127,10 +123,10 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
               </div>
             </div>
 
-            {/* --- Right Column: Sticky Summary Panel (Span 4) --- */}
+            {/* Right Column (Sticky Summary) */}
             <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
               
-              {/* Scorecard Widget */}
+              {/* Executive Summary Widget */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/50 p-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                     <Icon icon="solar:chart-square-bold" className="w-24 h-24 text-slate-900" />
@@ -139,7 +135,7 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
                 <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">Executive Summary</h3>
                 
                 <div className="space-y-6 relative z-10">
-                  {/* Metric 1 */}
+                  {/* Health Score */}
                   <div>
                     <div className="flex justify-between items-end mb-2">
                         <span className="text-slate-700 font-medium flex items-center gap-2">
@@ -158,7 +154,7 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
                     </div>
                   </div>
 
-                  {/* Metric 2 */}
+                  {/* Romance Score */}
                   <div>
                     <div className="flex justify-between items-end mb-2">
                         <span className="text-slate-700 font-medium flex items-center gap-2">
@@ -178,7 +174,7 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
                   </div>
                 </div>
 
-                {/* Dynamic Insight Badge */}
+                {/* Insight Badge */}
                 <div className={`mt-8 p-4 rounded-xl border flex items-start gap-3 ${getScoreColor(healthScore)}`}>
                     <Icon icon="solar:info-circle-bold" className="w-5 h-5 flex-shrink-0 mt-0.5" />
                     <div>
@@ -194,7 +190,7 @@ const Dashboard = ({ analysisData, onBackToHome }) => {
                 </div>
               </div>
 
-              {/* Secondary Widget: Participants */}
+              {/* Participants Widget */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Analyzed Participants</h4>
                  <div className="space-y-3">
